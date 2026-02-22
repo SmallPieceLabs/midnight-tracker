@@ -2,8 +2,6 @@
 > **Industrial-grade multi-wallet monitoring for the Midnight Network ecosystem.**
 
 [![Telegram Bot](https://img.shields.io/badge/Telegram-Bot-blue?style=for-the-badge&logo=telegram)](https://t.me/MidnightTracker_bot)
-[![X Follow](https://img.shields.io/twitter/follow/SmallPieceLabs?style=for-the-badge&logo=x&color=black)](https://x.com/SmallPieceLabs)
-[![YouTube](https://img.shields.io/badge/YouTube-Channel-red?style=for-the-badge&logo=youtube)](https://youtube.com/@SmallPieceLabs)
 
 ## 🌟 Overview
 **Midnight Tracker** is a professional utility tool built by **Small Piece Labs** for the Midnight Network community. We turn technical complexity into everyday accessibility, ensuring your $NIGHT and $DUST assets are managed with precision and privacy.
@@ -56,7 +54,5 @@ Stay updated with the **Small Piece Labs** ecosystem:
 - 📢 **Telegram News:** [t.me/SmallPieceLabs](https://t.me/SmallPieceLabs)
 - 🐦 **X (Twitter):** [@SmallPieceLabs](https://x.com/SmallPieceLabs)
 - 📺 **YouTube:** [@SmallPieceLabs](https://youtube.com/@SmallPieceLabs)
-- 🤖 **Developer:** [@MrHuong](https://t.me/MidnightTracker_bot)
-
 ---
 **Small Pieces. Massive Impact.** *Built with precision. Driven by community.*
