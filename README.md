@@ -18,30 +18,35 @@
 We follow a disciplined **Micro-Versioning** process to ensure industrial-grade stability and continuous improvement.
 
 ### 🟢 Phase 1: Foundation & Dynamic UI (v1.x)
-- [x] **v1.1:** Core logic with Inline Keyboard & Regex validation for Midnight addresses.
+- [x] **v1.0:** Core framework setup with basic command handling (/start, /help).
+- [x] **v1.1:** UI enhancement with Inline Keyboards & Regex wallet validation.
 - [x] **v1.2:** Live data connectivity via Maestro/Blockfrost API for real-time balances.
 - [ ] **v1.3:** Visual overhaul (Custom Icons) & Live Countdown (Seconds) for claim windows.
 - [ ] **v1.4:** Multilingual Support (English/Vietnamese) for global accessibility.
 
 ### 🔵 Phase 2: Data Persistence & Personalization (v2.x)
-- [ ] **v2.1:** Database Integration (SQLite/PostgreSQL) for user-specific data storage.
-- [ ] **v2.2:** Advanced Multi-wallet management logic (Add/List/Remove).
+- [ ] **v2.0:** Database core integration (SQLite/PostgreSQL) for user data persistence.
+- [ ] **v2.1:** User-specific configuration and preference storage logic.
+- [ ] **v2.2:** Advanced Multi-wallet management system (Add/List/Remove).
 - [ ] **v2.3:** Alias System: Ability to assign custom names to wallets (e.g., "Vault", "Staking").
-- [ ] **v2.4:** Data Portability: Export features for personal wallet backups.
+- [ ] **v2.4:** Data Portability: Feature to export saved wallet lists for user backups.
 
 ### 🟠 Phase 3: Smart Automation Engine (v3.x)
-- [ ] **v3.1:** 24/7 Background Workers for continuous on-chain status scanning.
+- [ ] **v3.0:** Development of the core Scanner Engine for on-chain status monitoring.
+- [ ] **v3.1:** 24/7 Background Workers for continuous multi-wallet scanning.
 - [ ] **v3.2:** Smart Alert v1: Real-time push notifications for $NIGHT claim availability.
 - [ ] **v3.3:** Smart Alert v2: Capacity alerts when $DUST accumulation hits 100%.
 - [ ] **v3.4:** Notification Control: Customizable quiet hours and "Snooze" functionality.
 
 ### 🟡 Phase 4: Asset Analysis & Tokenomics (v4.x)
-- [ ] **v4.1:** Multi-Asset Support: Tracking logic for all Tokens and NFTs in the ecosystem.
+- [ ] **v4.0:** Expansion of tracking logic to support the full Midnight asset standard.
+- [ ] **v4.1:** Ecosystem Multi-Asset Support (Tokens/NFTs) tracking.
 - [ ] **v4.2:** Yield Performance: Detailed statistics on $DUST generation rates per $NIGHT held.
 - [ ] **v4.3:** Visual Analytics: On-demand generation of asset growth charts (images).
 - [ ] **v4.4:** Portfolio Summary: Unified reports aggregating total value across all wallets.
 
 ### 🔴 Phase 5: Industrial Security & Scale (v5.x)
+- [ ] **v5.0:** Implementation of the Zero-Knowledge inspired security framework.
 - [ ] **v5.1:** Military-grade Encryption: Data-at-rest encryption for stored wallet addresses.
 - [ ] **v5.2:** Concurrency Optimization: Refactoring for high-scale simultaneous requests.
 - [ ] **v5.3:** Integrated Support: In-bot FAQ and direct developer feedback system.
@@ -54,5 +59,7 @@ Stay updated with the **Small Piece Labs** ecosystem:
 - 📢 **Telegram News:** [t.me/SmallPieceLabs](https://t.me/SmallPieceLabs)
 - 🐦 **X (Twitter):** [@SmallPieceLabs](https://x.com/SmallPieceLabs)
 - 📺 **YouTube:** [@SmallPieceLabs](https://youtube.com/@SmallPieceLabs)
+- 📧 **Contact:** [smallpiecelabs@gmail.com](mailto:smallpiecelabs@gmail.com)
+
 ---
 **Small Pieces. Massive Impact.** *Built with precision. Driven by community.*
