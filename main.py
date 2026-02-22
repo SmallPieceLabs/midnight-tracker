@@ -1,37 +1,32 @@
 # ==========================================================
 # PROJECT:     Midnight Tracker Bot
-# VERSION:     v1.0.0 (Core Architecture - English)
+# VERSION:     v1.1.0 (UX Enhancement - English)
 # AUTHOR:      Mr. Huong | Small Piece Labs
-# ECOSYSTEM:   Midnight Network (Cardano Sidechain)
-# DESCRIPTION: Professional monitoring tool for NIGHT/DUST rewards.
-# LICENSE:     MIT License
-# DATE: 2026-02-14
-==========================================================
+# DESCRIPTION: Simplified 2-button UI with Emoji Icons.
+#              Auto-wallet detection (No /check command needed).
+# SECURITY:    Token hidden via environment variables.
+# DATE:        2026-02-22
+# ==========================================================
 
 import os
 import logging
 from dotenv import load_dotenv
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
+from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
-# 1. SECURITY CONFIGURATION
-# Load environment variables from a hidden .env file
-# DO NOT hardcode your token here for public GitHub repositories
+# 1. SECURITY CONFIGURATION (Sanitized)
 load_dotenv()
+# This will search for 'TELEGRAM_BOT_TOKEN' in your local .env file
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
-# Configure logging to monitor bot performance and errors
+# Configure logging for monitoring
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', 
     level=logging.INFO
 )
 
-# 2. MOCK DATA ENGINE (Phase 1.0)
+# 2. MOCK DATA ENGINE (v1.1 Simulation)
 def get_midnight_data(address):
-    """
-    Simulates fetching unfreezing data from the Midnight Network Indexer.
-    Actual on-chain API integration is scheduled for Phase 1.2.
-    """
     return {
         "status": "Success",
         "night_balance": "1,250 NIGHT",
@@ -39,92 +34,74 @@ def get_midnight_data(address):
         "next_claim": "March 15, 2026"
     }
 
-# 3. USER INTERFACE - MAIN MENU
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Initializes the bot and displays the two core buttons."""
+# 3. KEYBOARD DEFINITION (2 Buttons with Icons)
+def main_menu_keyboard():
     keyboard = [
-        [InlineKeyboardButton("🔍 Check Wallet Status", callback_data='check_night')],
-        [InlineKeyboardButton("📖 Detailed User Guide", callback_data='help_info')]
+        [KeyboardButton("🔍 Check Status")],
+        [KeyboardButton("📖 Help Guide")]
     ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    
-    welcome_msg = (
-        "👋 **Welcome to Midnight Tracker (v1.0)**\n"
-        "Developed by **Small Piece Labs**.\n\n"
-        "Your automated companion for monitoring NIGHT unfreezing "
-        "and DUST accumulation on the Midnight Network.\n\n"
-        "Please select an option to begin:"
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+
+# 4. COMMAND HANDLERS
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_name = update.effective_user.first_name
+    welcome_text = (
+        f"Hello {user_name}! 🤖\n\n"
+        f"Welcome to **Midnight Tracker (v1.1)**.\n\n"
+        f"**How to use:**\n"
+        f"• Paste your wallet address directly into the chat.\n"
+        f"• Or use the menu buttons below."
     )
-    await update.message.reply_text(welcome_msg, reply_markup=reply_markup, parse_mode='Markdown')
+    await update.message.reply_text(
+        welcome_text, 
+        reply_markup=main_menu_keyboard(),
+        parse_mode='Markdown'
+    )
 
-# 4. INTERACTIVE BUTTON HANDLERS
-async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Processes clicks from the inline menu."""
-    query = update.callback_query
-    await query.answer()
-
-    if query.data == 'check_night':
-        await query.edit_message_text(
-            text=(
-                "🔎 **Wallet Verification**\n\n"
-                "Please send your public address using this command:\n"
-                "`/check <your_address>`\n\n"
-                "*Note:* Only use public addresses. Never share private keys."
-            ),
-            parse_mode='Markdown'
-        )
+# 5. MESSAGE HANDLER (Auto-wallet detection logic)
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
     
-    elif query.data == 'help_info':
-        # Comprehensive User Guide
+    # Button Logic (Exact match)
+    if text == "🔍 Check Status":
+        await update.message.reply_text("Please **Paste** your Midnight wallet address below:")
+        
+    elif text == "📖 Help Guide":
         guide_text = (
-            "📖 **Midnight Tracker: Detailed Guide**\n\n"
-            "**1. What is NIGHT Unfreezing?**\n"
-            "NIGHT tokens are released over a 90-day cycle. This bot tracks "
-            "that timeline so you can claim exactly when tokens are ready.\n\n"
-            "**2. How to use this Bot?**\n"
-            "• Tap 'Check Wallet' to see your current progress.\n"
-            "• Copy/Paste your address after the `/check` command.\n\n"
-            "**3. Future Updates (v2.0+)**\n"
-            "• Multi-wallet monitoring support.\n"
-            "• Automatic push notifications for claim windows.\n"
-            "• Real-time DUST energy tracking.\n\n"
-            "**4. Privacy & Security**\n"
-            "Following Midnight Network's privacy standards, we do not store "
-            "private keys. All data is fetched from public indexers."
+            "📖 **User Guide**\n\n"
+            "1. **Check Wallet:** No commands needed. Just paste your address.\n"
+            "2. **Claiming:** We monitor the 90-day unfreezing cycle.\n"
+            "3. **Security:** We never store private keys.\n\n"
+            "*Real-time API integration coming in v1.2!*"
         )
-        await query.edit_message_text(text=guide_text, parse_mode='Markdown')
-
-# 5. CORE LOGIC - WALLET QUERY
-async def check_wallet(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Executes the wallet data lookup command."""
-    if not context.args:
-        await update.message.reply_text("❌ Error: Missing address.\nFormat: `/check <address>`")
-        return
+        await update.message.reply_text(guide_text, parse_mode='Markdown')
+        
+    # AUTO-DETECTION: Long strings are assumed to be wallet addresses
+    elif len(text) > 20: 
+        data = get_midnight_data(text)
+        report = (
+            f"📊 **Wallet Status Report**\n"
+            f"Address: `{text[:10]}...` \n\n"
+            f"🔹 **Balance:** {data['night_balance']}\n"
+            f"⏳ **Progress:** {data['unfreezing_status']}\n"
+            f"📅 **Estimated Claim:** {data['next_claim']}\n\n"
+            f"_Simulated data for v1.1 testing._"
+        )
+        await update.message.reply_text(report, parse_mode='Markdown')
     
-    address = context.args[0]
-    data = get_midnight_data(address) # Simulate API call
-    
-    report = (
-        f"📊 **Midnight Wallet Report**\n"
-        f"Address: `{address[:10]}...` \n\n"
-        f"🔹 **NIGHT Balance:** {data['night_balance']}\n"
-        f"⏳ **Unfreezing:** {data['unfreezing_status']}\n"
-        f"📅 **Next Claim:** {data['next_claim']}\n\n"
-        f"_This report uses simulated data for v1.0 Alpha Testing._"
-    )
-    await update.message.reply_text(report, parse_mode='Markdown')
+    else:
+        await update.message.reply_text(
+            "I didn't recognize that. Please paste a valid address or select 'Help Guide'.",
+            reply_markup=main_menu_keyboard()
+        )
 
 if __name__ == '__main__':
-    # Build and launch the application
     if not TOKEN:
         print("❌ CRITICAL ERROR: TELEGRAM_BOT_TOKEN not found in .env file!")
     else:
         app = ApplicationBuilder().token(TOKEN).build()
-        
-        # Register command and callback handlers
         app.add_handler(CommandHandler('start', start))
-        app.add_handler(CommandHandler('check', check_wallet))
-        app.add_handler(CallbackQueryHandler(button_handler))
+        app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
         
-        print("🚀 Midnight Tracker v1.0 is online. Operational status: GREEN.")
+        print("🚀 Midnight Tracker v1.1 is Live & Secure!")
         app.run_polling()
